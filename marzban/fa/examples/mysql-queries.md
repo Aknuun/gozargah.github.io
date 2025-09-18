@@ -273,6 +273,13 @@ delete from users where datediff(now(),from_unixtime(expire))> 30
 در خصوص مورد بالا باید تیک `enable foreign key checks` خاموش باشد.
 :::
 
+حذف کاربرانی که بیش از `30` روز از اتمام حجم آنها گذشته است
+```sql
+DELETE FROM users
+WHERE
+  used_traffic >= data_limit
+  AND last_status_change <= DATE_SUB(NOW(), INTERVAL 30 DAY);
+```
 - حذف همه کاربرانی که غیرفعال شده‌اند.
 ```sql
 delete from users where status = 'disabled'
